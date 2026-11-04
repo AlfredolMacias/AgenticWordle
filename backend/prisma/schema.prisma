@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Team {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  conference String
+  division    String
+  abr        String   @unique
+  players    Player[]
+}
+
+model Player {
+  id           Int           @id @default(autoincrement())
+  name         String
+  position     String
+  jerseyNumber Int
+  yearsActive  Int
+  teamId       Int
+  team         Team          @relation(fields: [teamId], references: [id])
+  age          Int
+  gameSessions GameSession[]
+  guesses      Guess[]
+  dailySecrets DailyGame[]
+}
+
+model GameSession {
+  id             Int     @id @default(autoincrement())
+  secretPlayerId Int
+  attempts       Int     @default(0)
+  isFinished     Boolean @default(false)
+  isWin          Boolean @default(false)
+  score          Int?
+  guesses        Guess[]
+  secret         Player  @relation(fields: [secretPlayerId], references: [id])
+}
+
+model Guess {
+  id            Int         @id @default(autoincrement())
+  gameSessionId Int
+  playerId      Int
+  result        Json
+  gameSession   GameSession @relation(fields: [gameSessionId], references: [id])
+  player        Player      @relation(fields: [playerId], references: [id])
+}
+
+model DailyGame {
+  id             Int      @id @default(autoincrement())
+  date           String   @unique
+  secretPlayerId Int
+  createdAt      DateTime @default(now())
+  secret         Player   @relation(fields: [secretPlayerId], references: [id])
+}
