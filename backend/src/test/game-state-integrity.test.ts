@@ -282,7 +282,8 @@ describe('Game state integrity', () => {
         .post(`/api/game/${gameId}/guess`)
         .send({ playerId: 999999 });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('Player not found');
 
       const sessionAfter = await prisma.gameSession.findUnique({
         where: { id: gameId },

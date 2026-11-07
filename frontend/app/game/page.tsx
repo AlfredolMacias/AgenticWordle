@@ -29,11 +29,11 @@ export default function GamePage(){
         })
         const data = await res.json();
         console.log(data);
+        if (!res.ok || data.error) {
+            alert(data.error || 'Error submitting guess');
+            return;
+        }
         setGuesses(prev => [...prev, data])
-    }
-    const error = guesses.findLast(g => g.error);
-    if(error){
-        return (<></>)
     }
     const isGameWon = guesses.some(g => g.isWinner);
     const isFinished = guesses.findLast(g => g.isFinished);

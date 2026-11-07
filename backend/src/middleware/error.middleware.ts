@@ -18,6 +18,9 @@ export function errorHandler(
   if (err.message === 'Game not found') {
     return res.status(404).json({ error: err.message });
   }
+  if (err.message === 'Player not found') {
+    return res.status(404).json({ error: err.message });
+  }
   if (err.message === 'Game already finished') {
     return res.status(400).json({ error: err.message });
   }
