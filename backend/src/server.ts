@@ -28,10 +28,10 @@ app.use(limiter);
 app.use('/api/players', playersRoute);
 app.use('/api/game', gameRouter);
 
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
-
-app.use(errorHandler);

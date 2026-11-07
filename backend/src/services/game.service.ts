@@ -58,7 +58,7 @@ export async function getGameService(req: number) {
   });
 
   if (!game) {
-    return { error: 'Game not found' };
+    throw new Error('Game not found');
   }
 
   return game;
@@ -129,7 +129,7 @@ export async function makeGuessService(gameId: number, playerId: number) {
   });
 
   if (!guessedPlayer) {
-    return { error: 'Player not found' };
+    throw new Error('Player not found');
   }
 
   const secret = await prisma.player.findUnique({
@@ -149,7 +149,7 @@ export async function makeGuessService(gameId: number, playerId: number) {
   });
 
   if (!secret) {
-    return { error: 'Game not found' };
+    throw new Error('Game not found');
   }
 
   const { result, isWinner } = comparePlayers(secret, guessedPlayer);
